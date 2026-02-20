@@ -293,7 +293,7 @@ img {
 }
 
 /* ==============================
-   TRUST BAR
+   TRUST BAR + LOGO CAROUSEL
    ============================== */
 .trust-bar {
   padding: 3rem 0;
@@ -308,25 +308,54 @@ img {
   letter-spacing: 0.12em;
   color: var(--text-muted);
   font-weight: 600;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-.trust-logos {
+.logo-carousel {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.logo-track {
   display: flex;
+  gap: 3.5rem;
   align-items: center;
-  justify-content: center;
-  gap: 3rem;
-  flex-wrap: wrap;
+  width: max-content;
+  animation: logoScroll 30s linear infinite;
 }
 
-.trust-logo {
-  font-size: 1.1rem;
-  font-weight: 700;
+.logo-track:hover {
+  animation-play-state: paused;
+}
+
+.logo-item {
+  flex-shrink: 0;
+  width: 120px;
+  height: 28px;
   color: var(--text-muted);
-  opacity: 0.5;
-  font-family: var(--font-display), sans-serif;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.logo-item:hover {
+  opacity: 0.75;
+}
+
+.logo-item svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes logoScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-50% - 1.75rem));
+  }
 }
 
 /* ==============================

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
 import { Footer } from "@/components/footer";
 import { HeroAnimation } from "@/components/hero-animation";
+import { LogoCarousel } from "@/components/logo-carousel";
 import "./hero-animation.css";
 
 const pillars = [
@@ -147,15 +148,8 @@ export default function LandingPage() {
         <section className="trust-bar">
           <div className="shell">
             <p className="trust-bar-label">Trusted by leading enterprises worldwide</p>
-            <div className="trust-logos">
-              <span className="trust-logo">Anthropic</span>
-              <span className="trust-logo">OpenAI</span>
-              <span className="trust-logo">Google DeepMind</span>
-              <span className="trust-logo">Microsoft</span>
-              <span className="trust-logo">Meta AI</span>
-              <span className="trust-logo">Cohere</span>
-            </div>
           </div>
+          <LogoCarousel />
         </section>
 
         <section className="stats-section">
