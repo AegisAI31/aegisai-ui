@@ -1,7 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { BrandLogo } from "@/components/brand-logo";
 import { Footer } from "@/components/footer";
+import { HeroAnimation } from "@/components/hero-animation";
+import "./hero-animation.css";
 
 const pillars = [
   {
@@ -137,18 +138,7 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="hero-visual">
-                <div className="hero-visual-inner">
-                  <div className="hero-visual-glow" />
-                  <div className="hero-img-wrap">
-                    <Image
-                      src="/AIRobot.jpg"
-                      alt="AI Governance Platform"
-                      width={520}
-                      height={520}
-                      priority
-                    />
-                  </div>
-                </div>
+                <HeroAnimation />
               </div>
             </div>
           </div>
