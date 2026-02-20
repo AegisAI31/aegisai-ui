@@ -6,8 +6,8 @@ export function BrandLogo({ href = "/" }: { href?: string }) {
       <svg className="brand-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#8b5cf6" />
-            <stop offset="100%" stopColor="#c084fc" />
+            <stop offset="0%" stopColor="#7c5cfc" />
+            <stop offset="100%" stopColor="#9b7dff" />
           </linearGradient>
         </defs>
         <path

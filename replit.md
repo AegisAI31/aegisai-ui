@@ -29,7 +29,16 @@ AegisAI is a Next.js 16 frontend application for enterprise AI governance. It pr
 - `jose` - JWT signing/verification
 - `pg` - PostgreSQL client
 
+### Design System
+- **Landing page**: Dark theme (RunPod-inspired), deep navy background (#0b0e14), purple accent (#7c5cfc), clean card-based layout
+- **Dashboard**: Light theme (white/gray/indigo), left sidebar navigation, completely separate from landing page
+- **Auth pages**: Centered card on dark background, minimal and clean
+- **Fonts**: Sora (display), Space Grotesk (body)
+
 ## Recent Changes
+- 2026-02-20: Redesigned landing page with RunPod-inspired clean dark theme (hero, trust bar, stats, pillars, features, CTA)
+- 2026-02-20: Redesigned auth pages (login/signup) with centered card design
+- 2026-02-20: Updated footer with cleaner grid layout
 - 2026-02-20: Configured for Replit environment (port 5000, allowed dev origins, Node.js 22)
 - 2026-02-20: Replaced external auth service with self-contained PostgreSQL-backed auth system
 - 2026-02-20: Created local API routes for signup, login, logout, me, API keys, and trust evaluation

@@ -1,22 +1,19 @@
 import Link from "next/link";
 import { AuthForm } from "@/components/auth-form";
 import { BrandLogo } from "@/components/brand-logo";
-import { Footer } from "@/components/footer";
 
 export default function LoginPage() {
   return (
-    <>
-      <main className="auth-page shell">
-        <div className="auth-header">
+    <main className="auth-page">
+      <div className="auth-container">
+        <div className="auth-top">
           <BrandLogo />
-          <Link href="/" className="ghost-btn">
-            ← Back to Home
-          </Link>
         </div>
         <AuthForm mode="login" />
-      </main>
-      
-      <Footer />
-    </>
+        <div className="auth-back">
+          <Link href="/">Back to Home</Link>
+        </div>
+      </div>
+    </main>
   );
 }
