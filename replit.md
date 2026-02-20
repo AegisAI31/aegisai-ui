@@ -8,17 +8,28 @@ AegisAI is a Next.js 16 frontend application for enterprise AI governance. It pr
 - **Language**: TypeScript
 - **Runtime**: Node.js 22
 - **Port**: 5000 (dev and production)
+- **Database**: PostgreSQL (Replit built-in)
 
 ### Directory Structure
-- `app/` - Next.js App Router pages (layout, home, login, signup, dashboard)
+- `app/` - Next.js App Router pages and API routes
+  - `app/api/auth/` - Auth API routes (signup, login, me, logout)
+  - `app/api/api-keys/` - API key management routes
+  - `app/api/trust/` - Trust evaluation routes
 - `components/` - Reusable React components (auth forms, dashboard, footer, etc.)
-- `lib/` - Shared utilities (config, HTTP client)
+- `lib/` - Shared utilities (config, HTTP client, database, auth)
 - `public/` - Static assets (images)
 
-### Backend APIs (External)
-The app connects to external backend services configured via environment variables:
-- `AEGIS_AUTH_API_URL` - Authentication API (default: http://localhost:8000)
-- `AEGIS_CORE_API_URL` - Core API (default: http://localhost:8001)
+### Authentication
+- Self-contained auth using PostgreSQL, bcrypt, and JWT (jose library)
+- Session stored as httpOnly cookie (`aegis_session`)
+- JWT_SECRET environment variable for token signing
+
+### Key Libraries
+- `bcryptjs` - Password hashing
+- `jose` - JWT signing/verification
+- `pg` - PostgreSQL client
 
 ## Recent Changes
 - 2026-02-20: Configured for Replit environment (port 5000, allowed dev origins, Node.js 22)
+- 2026-02-20: Replaced external auth service with self-contained PostgreSQL-backed auth system
+- 2026-02-20: Created local API routes for signup, login, logout, me, API keys, and trust evaluation
