@@ -337,34 +337,20 @@ img {
   align-items: center;
   justify-content: center;
   height: 32px;
-  color: var(--text-muted);
-  opacity: 0.35;
+  opacity: 0.4;
   transition: opacity 0.4s ease;
   user-select: none;
 }
 
 .logo-item:hover {
-  opacity: 0.7;
+  opacity: 0.75;
 }
 
-.logo-item span {
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-  font-family: var(--font-display), sans-serif;
+.logo-item img {
+  filter: brightness(0) invert(1);
+  height: 28px;
+  width: auto;
 }
-
-.logo-anthropic span { letter-spacing: 0.06em; font-weight: 600; }
-.logo-openai span { font-weight: 700; letter-spacing: -0.02em; }
-.logo-google span { font-weight: 500; letter-spacing: 0; font-size: 1.2rem; }
-.logo-microsoft span { font-weight: 600; letter-spacing: 0.01em; font-size: 1.2rem; }
-.logo-meta span { font-weight: 800; letter-spacing: -0.03em; font-size: 1.35rem; }
-.logo-cohere span { font-weight: 700; letter-spacing: 0.02em; }
-.logo-aws span { font-weight: 800; letter-spacing: 0.08em; font-size: 1.4rem; }
-.logo-nvidia span { font-weight: 800; letter-spacing: 0.1em; font-size: 1.1rem; text-transform: uppercase; }
-.logo-databricks span { font-weight: 600; letter-spacing: 0; font-size: 1.15rem; }
-.logo-snowflake span { font-weight: 600; letter-spacing: 0.02em; font-size: 1.2rem; }
 
 @keyframes logoScroll {
   0% {
