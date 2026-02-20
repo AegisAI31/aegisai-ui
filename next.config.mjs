@@ -2,7 +2,7 @@
 const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
-  allowedDevOrigins: ['*'],
+  allowedDevOrigins: ['*.replit.dev', '*.riker.replit.dev', '*.repl.co'],
 };
 
 export default nextConfig;

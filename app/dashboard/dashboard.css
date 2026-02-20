@@ -22,6 +22,56 @@
   --d-radius-lg: 14px;
 }
 
+.dash-shell,
+.dash-shell *,
+.dash-loading {
+  -webkit-text-fill-color: unset;
+  background-clip: unset;
+  -webkit-background-clip: unset;
+}
+
+.dash-shell h1,
+.dash-shell h2,
+.dash-shell h3,
+.dash-shell h4,
+.dash-shell h5,
+.dash-shell h6,
+.dash-loading h1 {
+  background: none;
+  -webkit-text-fill-color: unset;
+  background-clip: unset;
+  -webkit-background-clip: unset;
+  color: var(--d-text);
+}
+
+.dash-shell input,
+.dash-shell textarea,
+.dash-shell select {
+  background: var(--d-surface);
+  border: 1px solid var(--d-border);
+  color: var(--d-text);
+  margin-top: 0;
+}
+
+.dash-shell input:focus,
+.dash-shell textarea:focus,
+.dash-shell select:focus {
+  outline: none;
+  border-color: var(--d-accent);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  background: white;
+}
+
+.dash-shell label {
+  margin-bottom: 0;
+  font-weight: inherit;
+  color: inherit;
+}
+
+.dash-shell a {
+  transition: color 0.15s;
+}
+
 .dash-loading {
   display: flex;
   flex-direction: column;
@@ -50,27 +100,33 @@
 .dash-shell {
   display: flex;
   min-height: 100vh;
-  background: var(--d-bg);
+  background: var(--d-bg) !important;
   font-family: var(--font-body), system-ui, -apple-system, sans-serif;
   color: var(--d-text);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
 }
 
 .dash-sidebar {
   width: var(--d-sidebar-w);
+  min-width: var(--d-sidebar-w);
   background: var(--d-surface);
   border-right: 1px solid var(--d-border);
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
+  height: 100%;
   z-index: 100;
-  transition: width 0.2s ease;
+  transition: width 0.2s ease, min-width 0.2s ease;
+  flex-shrink: 0;
 }
 
 .dash-shell.collapsed .dash-sidebar {
   width: var(--d-sidebar-collapsed);
+  min-width: var(--d-sidebar-collapsed);
 }
 
 .dash-sidebar-top {
@@ -229,16 +285,14 @@
 
 .dash-main {
   flex: 1;
-  margin-left: var(--d-sidebar-w);
   padding: 2rem 2.5rem;
-  min-height: 100vh;
-  transition: margin-left 0.2s ease;
-  max-width: 100%;
+  overflow-y: auto;
   overflow-x: hidden;
+  height: 100%;
 }
 
 .dash-shell.collapsed .dash-main {
-  margin-left: var(--d-sidebar-collapsed);
+  margin-left: 0;
 }
 
 .dash-page-title {
