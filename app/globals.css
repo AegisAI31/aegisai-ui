@@ -699,6 +699,70 @@ img {
   text-decoration: underline;
 }
 
+.oauth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.oauth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+  border: 1px solid var(--border-subtle);
+}
+
+.oauth-google {
+  background: #fff;
+  color: #3c4043;
+}
+
+.oauth-google:hover {
+  background: #f7f8f8;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.oauth-github {
+  background: #24292f;
+  color: #fff;
+  border-color: #24292f;
+}
+
+.oauth-github:hover {
+  background: #32383f;
+  border-color: #32383f;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
 .auth-card .error {
   color: var(--error);
   background: var(--error-dim);

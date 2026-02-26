@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { AuthForm } from "@/components/auth-form";
 import { BrandLogo } from "@/components/brand-logo";
@@ -9,7 +10,9 @@ export default function LoginPage() {
         <div className="auth-top">
           <BrandLogo />
         </div>
-        <AuthForm mode="login" />
+        <Suspense>
+          <AuthForm mode="login" />
+        </Suspense>
         <div className="auth-back">
           <Link href="/">Back to Home</Link>
         </div>
