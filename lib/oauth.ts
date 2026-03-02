@@ -1,3 +1,5 @@
+import crypto from "crypto";
+
 export function getBaseUrl() {
   if (process.env.REPLIT_DEV_DOMAIN) {
     return `https://${process.env.REPLIT_DEV_DOMAIN}`;
@@ -8,7 +10,11 @@ export function getBaseUrl() {
   return `http://localhost:${process.env.PORT || 5000}`;
 }
 
-export function getGoogleAuthUrl() {
+export function generateOAuthState(): string {
+  return crypto.randomBytes(32).toString("hex");
+}
+
+export function getGoogleAuthUrl(state: string) {
   const clientId = process.env.GOOGLE_CLIENT_ID;
   if (!clientId) return null;
 
@@ -20,12 +26,13 @@ export function getGoogleAuthUrl() {
     scope: "openid email profile",
     access_type: "offline",
     prompt: "consent",
+    state,
   });
 
   return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
 }
 
-export function getGitHubAuthUrl() {
+export function getGitHubAuthUrl(state: string) {
   const clientId = process.env.GITHUB_CLIENT_ID;
   if (!clientId) return null;
 
@@ -34,6 +41,7 @@ export function getGitHubAuthUrl() {
     client_id: clientId,
     redirect_uri: redirectUri,
     scope: "user:email",
+    state,
   });
 
   return `https://github.com/login/oauth/authorize?${params.toString()}`;

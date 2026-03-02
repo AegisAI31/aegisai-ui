@@ -8,8 +8,18 @@ import { getBaseUrl } from "@/lib/oauth";
 export async function GET(request: NextRequest) {
   try {
     const code = request.nextUrl.searchParams.get("code");
+    const state = request.nextUrl.searchParams.get("state");
+
     if (!code) {
       return NextResponse.redirect(`${getBaseUrl()}/login?error=no_code`);
+    }
+
+    const jar = await cookies();
+    const storedState = jar.get("oauth_state")?.value;
+    jar.delete("oauth_state");
+
+    if (!state || !storedState || state !== storedState) {
+      return NextResponse.redirect(`${getBaseUrl()}/login?error=invalid_state`);
     }
 
     const clientId = process.env.GITHUB_CLIENT_ID;
@@ -55,7 +65,7 @@ export async function GET(request: NextRequest) {
       });
       const emails = await emailsRes.json();
       const primary = emails.find((e: { primary: boolean; verified: boolean }) => e.primary && e.verified);
-      email = primary?.email || emails[0]?.email;
+      email = primary?.email || emails.find((e: { verified: boolean }) => e.verified)?.email;
     }
 
     if (!email) {
@@ -84,7 +94,6 @@ export async function GET(request: NextRequest) {
 
     const token = await createToken(user.id, user.email, user.role);
 
-    const jar = await cookies();
     jar.set(AUTH_COOKIE, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

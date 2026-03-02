@@ -21,8 +21,12 @@ AegisAI is a Next.js 16 frontend application for enterprise AI governance. It pr
 
 ### Authentication
 - Self-contained auth using PostgreSQL, bcrypt, and JWT (jose library)
+- Google OAuth SSO ("Continue with Google") with CSRF state protection
+- GitHub OAuth SSO ready (needs GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET)
 - Session stored as httpOnly cookie (`aegis_session`)
 - JWT_SECRET environment variable for token signing
+- OAuth users stored with provider, oauth_id, display_name, avatar_url
+- DB schema supports both password-based and OAuth-only accounts
 
 ### Key Libraries
 - `bcryptjs` - Password hashing

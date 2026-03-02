@@ -11,7 +11,9 @@ const oauthErrors: Record<string, string> = {
   oauth_not_configured: "OAuth is not configured yet",
   token_failed: "Failed to verify your account",
   no_email: "Could not retrieve your email address",
+  email_not_verified: "Your email address is not verified with Google",
   account_deactivated: "This account has been deactivated",
+  invalid_state: "Session expired, please try again",
   oauth_failed: "Authentication failed, please try again",
 };
 
