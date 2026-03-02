@@ -41,7 +41,6 @@ export function AuthForm({ mode }: { mode: Mode }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [oauthUrls, setOauthUrls] = useState<{ google: string | null; github: string | null }>({ google: null, github: null });
   const searchParams = useSearchParams();
 
   const isSignup = mode === "signup";
@@ -52,13 +51,6 @@ export function AuthForm({ mode }: { mode: Mode }) {
       setError(oauthErrors[errParam] || "Authentication failed");
     }
   }, [searchParams]);
-
-  useEffect(() => {
-    fetch("/api/auth/oauth-urls")
-      .then(res => res.json())
-      .then(data => setOauthUrls(data))
-      .catch(() => {});
-  }, []);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -96,29 +88,6 @@ export function AuthForm({ mode }: { mode: Mode }) {
           ? "Start securing your AI outputs with enterprise-grade trust orchestration." 
           : "Sign in to access your AegisAI dashboard and manage your AI governance."}
       </p>
-
-      {(oauthUrls.google || oauthUrls.github) && (
-        <div className="oauth-buttons">
-          {oauthUrls.google && (
-            <a href={oauthUrls.google} className="oauth-btn oauth-google">
-              <GoogleIcon />
-              <span>Continue with Google</span>
-            </a>
-          )}
-          {oauthUrls.github && (
-            <a href={oauthUrls.github} className="oauth-btn oauth-github">
-              <GitHubIcon />
-              <span>Continue with GitHub</span>
-            </a>
-          )}
-        </div>
-      )}
-
-      {(oauthUrls.google || oauthUrls.github) && (
-        <div className="auth-divider">
-          <span>or continue with email</span>
-        </div>
-      )}
 
       <label>
         <span>Work Email</span>
