@@ -1,0 +1,141 @@
+You are Replit Agent acting as a senior product engineer + UX designer.
+
+Goal:
+Observe the “Settings” page for the AegisAI dashboard, it should be highly comprehensive, enterprise-grade, and extremely user friendly — but implemented with minimal complexity and minimal code.
+
+Constraints:
+- Keep code minimal: reuse existing UI components (Card, Button, Input, Table, Tabs, Modal, Toast).
+- Use mock data only (no backend calls), but structure it so wiring later is easy.
+- No empty sections: every section must have realistic default values + helper text.
+- Include search within settings to quickly find options.
+- Responsive design: works on desktop and mobile.
+- Design theme must match the dashboard (dark futuristic, subtle gradients, soft-glow borders).
+
+Deliverables:
+1) Add a new route: /settings
+2) Add Settings to navbar
+3) Implement Settings as a tabbed layout with these tabs:
+   - Account
+   - API Keys
+   - Policies
+   - Notifications
+   - Security
+   - Billing (mock)
+   - Developer
+
+Core UX Requirements:
+- Each tab uses Cards with concise headings, descriptions, and inline help tips.
+- Provide “Save Changes” actions with toasts (mock save).
+- Provide confirm modals for destructive actions.
+- Provide copy-to-clipboard for keys and tokens.
+- Provide minimal but clear validation and error states.
+
+Page Layout:
+- Top header: “Settings”
+- Subtitle: “Manage your AegisAI workspace, policies, and security”
+- Search bar: “Search settings…” filters settings cards across tabs (simple client-side filter)
+- Tabs row
+- Content area
+
+Tab Details:
+
+A) Account Tab
+- Profile card:
+  - Name, Email (read-only), Role (read-only), Workspace (dropdown mock)
+  - “Update profile” button (mock)
+- Preferences card:
+  - Timezone selector
+  - Theme toggle (Dark/Auto — mock)
+  - Default dashboard range (7/14/30 days)
+  - “Save preferences” button
+
+B) API Keys Tab (HIGH PRIORITY)
+- Table of API Keys:
+  Columns: Label, Key (masked), Created, Last Used, Status (Active/Disabled), Actions
+  Actions: Copy, Rotate, Disable, Delete
+- “Create API Key” modal:
+  Fields: Label, Environment (Dev/Staging/Prod), Scopes (Analyze/Generate/Agent-Check/Reports), Rate limit preset
+  On create: show full key ONCE with big warning + copy button
+- “Rotate Key” modal:
+  - Explains rotation and shows new key once
+- Helper section:
+  - How to store keys (env vars)
+  - Key rotation best practices
+
+C) Policies Tab
+- Policies list (cards or table):
+  - Policy Name, Version, Strictness, Region, Last Updated, Status
+  - Actions: Set Active, Duplicate, Edit (mock), View Versions
+- Policy editor modal (minimal):
+  - Name, strictness slider, region dropdown
+  - Enforcement toggles: Rewrite, Disclaimer, Escalate
+  - Thresholds: risk_block_threshold, hallucination_escalate_threshold
+- Versions drawer:
+  - Show 3–5 historical versions (mock) with timestamp + change notes
+
+D) Notifications Tab
+- Toggles:
+  - Email alerts for high-risk blocks
+  - Weekly compliance report email
+  - Alerts when error rate spikes
+- Channels (mock):
+  - Email (default)
+  - Slack webhook (optional input + “Test webhook” mock)
+- Frequency dropdowns
+
+E) Security Tab (Must be enterprise-feel)
+- MFA card (mock):
+  - Enable MFA button + status indicator
+- Session management card:
+  - “Sign out of all sessions” (confirm modal)
+- IP allowlist card (mock):
+  - Add allowed IP ranges
+  - Simple list UI with remove option
+- Data retention card:
+  - Audit retention: 30/90/180/365 days
+  - Report retention: 30/90/180/365 days
+  - “No-store mode” toggle (store only hashes/metrics — mock)
+  - Save button
+
+F) Billing Tab (Mock but polished)
+- Plan card:
+  - Current plan: Starter/Growth/Enterprise (mock)
+  - Usage summary: requests this month, remaining quota
+  - “Upgrade” CTA button (no real flow)
+- Invoice list table (mock):
+  - Month, Amount, Status, Download PDF action (mock)
+
+G) Developer Tab
+- SDK Quick Links:
+  - Buttons linking to /sdk page anchors (Install / Quickstart / Agent Guard)
+- Webhooks card (mock):
+  - “Add webhook endpoint” for events: request.blocked, request.escalated, policy.updated
+  - Secret token (masked) with copy
+- Environment variables card:
+  - Show recommended env names (AEGIS_API_KEY, AEGIS_BASE_URL, etc.)
+  - Copy buttons
+
+Mock Data:
+Create /src/mock/settings.ts with:
+- account
+- preferences
+- apiKeys[]
+- policies[]
+- notificationSettings
+- securitySettings
+- billingInfo
+- developerSettings
+
+Minimal Code Strategy:
+- One SettingsPage with <Tabs>
+- Each tab is a small component file (AccountTab.tsx, ApiKeysTab.tsx, etc.)
+- Shared components reused: Card, Modal, Table, Toggle, Select, TextInput, CodeBlock
+- Use simple state management (useState + context if already existing)
+
+Finish Criteria:
+- Settings looks “complete” and enterprise-grade.
+- Every action gives user feedback (toast).
+- No dead ends: everything has copy, explanation, defaults.
+- Minimal code, clean structure, easy future API wiring.
+
+Implement it now.

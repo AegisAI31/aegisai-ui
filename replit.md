@@ -25,6 +25,8 @@ AegisAI is a Next.js 16 frontend application for enterprise AI governance. It pr
   - `mock/prompts.ts` - Prompt template generation + saved library
   - `mock/sdk.ts` - SDK versions, changelog, code examples, FAQs
   - `mock/policies.ts` - Policy list with versions and statuses
+  - `mock/settings.ts` - Settings page mock data (account, API keys, notifications, security, billing, developer)
+- `components/settings/` - Settings tab components (account-tab, api-keys-tab, policies-tab, notifications-tab, security-tab, billing-tab, developer-tab)
 - `public/` - Static assets (images, logo SVGs)
 
 ### Dashboard Pages
@@ -34,7 +36,7 @@ AegisAI is a Next.js 16 frontend application for enterprise AI governance. It pr
 4. **Prompt Generator** - Generate policy-bound prompt templates with inputs panel, tabs (Strict/Balanced/Adaptive), prompt library
 5. **SDK** - Full documentation page with installation, quickstart, auth, best practices, FAQ, download modal
 6. **Audit Trails** - Searchable/filterable audit table with pagination, details drawer, CSV export
-7. **Settings** - User profile and account info
+7. **Settings** - Comprehensive 7-tab settings page (Account, API Keys, Policies, Notifications, Security, Billing, Developer) with search, modals, toasts
 
 ### Authentication
 - Self-contained auth using PostgreSQL, bcrypt, and JWT (jose library)
@@ -62,6 +64,7 @@ AegisAI is a Next.js 16 frontend application for enterprise AI governance. It pr
 All dashboard pages use client-side mock data from the `mock/` folder. Data is structured with TypeScript interfaces so it can be replaced with real API calls later. Each mock file exports typed constants and helper functions.
 
 ## Recent Changes
+- 2026-03-03: Built enterprise-grade Settings page with 7 tabs, search filtering, modals, toasts, and comprehensive mock data
 - 2026-03-03: Built comprehensive dashboard with 4 new pages (Dashboard overview with charts, Prompt Generator, SDK docs, Audit Trails)
 - 2026-03-03: Created mock data layer with typed TypeScript objects for all dashboard data
 - 2026-03-03: Added Recharts for dashboard visualizations (line, stacked bar, donut charts)

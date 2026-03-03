@@ -121,3 +121,77 @@ export interface SystemHealth {
   trustEngineVersion: string;
   policyVersion: string;
 }
+
+export interface SettingsApiKey {
+  id: string;
+  label: string;
+  key: string;
+  createdAt: string;
+  lastUsed: string;
+  status: "Active" | "Disabled";
+  environment: "Production" | "Staging" | "Development";
+  scopes: string[];
+}
+
+export interface PolicyVersion {
+  version: string;
+  date: string;
+  notes: string[];
+}
+
+export interface PolicyExtra {
+  policyId: string;
+  strictness: number;
+  region: string;
+  versions: PolicyVersion[];
+}
+
+export interface NotificationSettings {
+  emailHighRisk: boolean;
+  weeklyReport: boolean;
+  errorSpike: boolean;
+  channels: { email: string; slackWebhook: string };
+  frequency: "immediate" | "hourly" | "daily";
+}
+
+export interface SecuritySettings {
+  mfaEnabled: boolean;
+  activeSessions: number;
+  ipAllowlist: string[];
+  auditRetention: number;
+  reportRetention: number;
+  noStoreMode: boolean;
+}
+
+export interface Invoice {
+  id: string;
+  month: string;
+  amount: string;
+  status: "Paid" | "Pending";
+}
+
+export interface BillingInfo {
+  plan: string;
+  requestsThisMonth: number;
+  quota: number;
+  invoices: Invoice[];
+}
+
+export interface WebhookEndpoint {
+  id: string;
+  url: string;
+  events: string[];
+  secretToken: string;
+  active: boolean;
+}
+
+export interface EnvVarRecommendation {
+  name: string;
+  description: string;
+  example: string;
+}
+
+export interface DeveloperSettings {
+  webhooks: WebhookEndpoint[];
+  envVars: EnvVarRecommendation[];
+}
