@@ -71,7 +71,7 @@ export default function SettingsPage() {
         ))}
       </div>
 
-      <div className="dash-tab-content" style={{ marginTop: "1.25rem" }}>
+      <div style={{ marginTop: "1.25rem" }}>
         {activeTab === "account" && <AccountTab searchQuery={searchQuery} showToast={showToast} />}
         {activeTab === "api-keys" && <ApiKeysTab searchQuery={searchQuery} showToast={showToast} />}
         {activeTab === "policies" && <PoliciesTab searchQuery={searchQuery} showToast={showToast} />}
