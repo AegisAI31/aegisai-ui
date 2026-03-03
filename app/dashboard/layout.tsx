@@ -51,10 +51,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (!user) return null;
 
-  const navItems = [
-    { href: "/dashboard", label: "Overview", icon: "grid" },
+  const mainNavItems = [
+    { href: "/dashboard", label: "Dashboard", icon: "dashboard" },
     { href: "/dashboard/evaluate", label: "Trust Evaluation", icon: "shield" },
     { href: "/dashboard/api-keys", label: "API Keys", icon: "key" },
+    { href: "/dashboard/prompt-generator", label: "Prompt Generator", icon: "prompt" },
+    { href: "/dashboard/sdk", label: "SDK", icon: "sdk" },
+    { href: "/dashboard/audit-trails", label: "Audit Trails", icon: "audit" },
+  ];
+
+  const utilityNavItems = [
     { href: "/dashboard/profile", label: "Settings", icon: "settings" },
   ];
 
@@ -87,10 +93,27 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
 
         <nav className="dash-nav">
-          {navItems.map((item) => {
+          {mainNavItems.map((item) => {
             const isActive = item.href === "/dashboard"
               ? pathname === "/dashboard"
               : pathname.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`dash-nav-item ${isActive ? "active" : ""}`}
+                title={sidebarCollapsed ? item.label : undefined}
+              >
+                <NavIcon name={item.icon} />
+                {!sidebarCollapsed && <span>{item.label}</span>}
+              </Link>
+            );
+          })}
+          <div className="dash-nav-divider">
+            {!sidebarCollapsed && <span>Utilities</span>}
+          </div>
+          {utilityNavItems.map((item) => {
+            const isActive = pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}
@@ -137,13 +160,37 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
 function NavIcon({ name }: { name: string }) {
   switch (name) {
-    case "grid":
+    case "dashboard":
       return (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="3" y="3" width="7" height="7" />
           <rect x="14" y="3" width="7" height="7" />
           <rect x="14" y="14" width="7" height="7" />
           <rect x="3" y="14" width="7" height="7" />
+        </svg>
+      );
+    case "prompt":
+      return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="4 17 10 11 4 5" />
+          <line x1="12" y1="19" x2="20" y2="19" />
+        </svg>
+      );
+    case "sdk":
+      return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="16 18 22 12 16 6" />
+          <polyline points="8 6 2 12 8 18" />
+        </svg>
+      );
+    case "audit":
+      return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+          <polyline points="10 9 9 9 8 9" />
         </svg>
       );
     case "shield":

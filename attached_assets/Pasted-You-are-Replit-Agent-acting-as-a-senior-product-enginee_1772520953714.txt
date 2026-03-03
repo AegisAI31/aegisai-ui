@@ -1,0 +1,199 @@
+You are Replit Agent acting as a senior product engineer + UI/UX implementer for the AegisAI web app.
+
+Goal:
+After user authentication, replace the current minimal overview page with a comprehensive “AegisAI Control Plane” dashboard. Build a futuristic, enterprise-grade UI that is fast, clean, and easy to navigate.
+
+Non-negotiables:
+- Do NOT leave any page empty; include realistic placeholder data + helpful copy everywhere.
+- All pages must be accessible from the navbar and have complete layouts.
+- Implement responsive design (desktop-first, then mobile).
+- Use a modern component system (cards, tables, tabs, modals, toasts).
+- Provide a consistent design language across pages (dark futuristic theme, neon accents, subtle gradients, soft-glow borders).
+- Ensure there is a clear “copy” action wherever keys/prompts are displayed.
+- Use client-side mock data (JSON) for now; structure it so it can be replaced with real APIs later.
+
+Tech assumptions:
+- Use React + TypeScript + Tailwind (preferred).
+- Charts: Recharts (preferred) or Chart.js.
+- Tables: simple table component + pagination + search filter.
+- Routing: React Router.
+- Authentication state: simple auth context; assume user is already signed in when rendering dashboard routes.
+- Data layer: implement a /src/mock folder with typed mock objects and a minimal data-access layer.
+
+Deliverables:
+1) A complete authenticated dashboard experience with a new navbar:
+   - Dashboard
+   - Prompt Generator
+   - SDK
+   - Audit Trails
+   - Reports (optional but recommended to link)
+   - Settings (optional but recommended)
+
+2) Dashboard Page (replace old overview):
+   Layout:
+   - Top header: “AegisAI Control Plane” + environment selector (Dev/Staging/Prod)
+   - KPI tiles (cards):
+     - Total Requests (last 24h + last 7d)
+     - Approved Rate (%)
+     - Blocked Rate (%)
+     - Escalated Rate (%)
+     - Avg Latency (ms)
+     - Active Policies count
+   - Charts section:
+     - Line chart: Requests over time (7/14/30 day toggle)
+     - Stacked bar chart: Enforcement outcomes (Allow/Block/Rewrite/Escalate)
+     - Pie/Donut: Top violation categories
+   - “Recent Activity” table (last 20):
+     - Request ID
+     - Timestamp
+     - Endpoint (analyze/generate/agent-check)
+     - Policy
+     - Status (Approved/Blocked/Escalated)
+     - Risk Score
+     - View Details action
+   - Right sidebar (or below on mobile):
+     - “System Health” (uptime, p95 latency, error rate)
+     - “Trust Engine Version” + “Policy Version”
+     - “Quick Actions” buttons:
+       - Generate Prompt
+       - Download SDK
+       - View Audit Trails
+       - Create Report (optional)
+
+   Interactions:
+   - Search + filter in tables (status, endpoint, policy)
+   - Clicking a request opens a details drawer/modal showing:
+     - request payload summary (redacted)
+     - risk scores
+     - violations
+     - enforcement decision
+     - report_id link (placeholder)
+
+3) Prompt Generator Page (new):
+   Purpose: Auto-generate policy-bound prompts for customers.
+   Layout:
+   - Left: “Inputs” panel
+     - Keywords textarea (required)
+     - Industry dropdown (SaaS Support, Marketplace, FinTech, Healthcare-lite, Education)
+     - Strictness slider (1–5)
+     - Region dropdown (US, EU, CA, Global)
+     - Toggle switches:
+       - Add disclaimers
+       - Allow rewrite on violation
+       - Escalate to human
+     - Upload button (“+”) to upload policy document (PDF/TXT) — mock upload (no OCR), store filename and placeholder extracted text.
+   - Right: “Generated Prompt Templates” panel
+     - Tabs: Strict / Balanced / Adaptive
+     - Each tab shows:
+       - System prompt + developer instructions (formatted)
+       - JSON config snippet (policy_id, thresholds)
+       - Copy button bottom-right
+       - “Use this prompt” CTA (saves to user’s prompt library mock)
+   - Below: “Prompt Library”
+     - List of saved prompts with:
+       - Name
+       - Created date
+       - Policy mode
+       - Copy / Edit / Delete
+
+   Behavior:
+   - Clicking Generate produces 3 templates using deterministic local template logic (no external API).
+   - Provide meaningful placeholder prompts aligned with AegisAI (enforcement, audit, disclaimers).
+
+4) SDK Page (new) — MUST NOT BE EMPTY:
+   Purpose: Let developers download SDK + read full manual.
+   Layout:
+   - Hero section:
+     - “AegisAI SDK” + short value proposition
+     - Buttons:
+       - Download Python SDK (mock)
+       - Download Node SDK (mock)
+       - View Docs (scroll to manual)
+   - SDK Installation cards:
+     - Python: pip install aegisai
+     - Node: npm install @aegisai/sdk
+     - Include copy buttons on code blocks
+   - Quickstart section:
+     - Guarded Generation example
+     - Post-Processing analyze example
+     - Agent tool-call check example
+   - Authentication section:
+     - How to set API key in env vars
+     - How to rotate keys (link to Settings placeholder)
+   - Best Practices section:
+     - Set policy_id
+     - Log report_id
+     - Use strictness thresholds
+     - Handle escalation flows
+   - FAQ section:
+     - Rate limits
+     - Retries
+     - Timeouts
+     - Error codes
+
+   Add a “Download SDK” modal:
+   - Choose language
+   - Shows version number
+   - Shows changelog snippet (mock)
+
+5) Audit Trails Page (new):
+   Purpose: Provide an audit-grade view of requests.
+   Layout:
+   - Summary bar:
+     - Total requests today
+     - Approved / Blocked / Escalated counts
+     - Error count
+   - Table with pagination + search:
+     Columns:
+     - Request ID
+     - Timestamp
+     - API Key label (masked)
+     - Endpoint
+     - Status (Approved/Blocked/Escalated)
+     - Risk Score
+     - Policy
+     - Report ID (clickable)
+     - Actions: View details
+   - Filters:
+     - Date range
+     - Status
+     - Endpoint
+     - Policy
+   - Request Details drawer/modal:
+     - Inputs (redacted)
+     - Model/provider (placeholder)
+     - Risk metrics
+     - Violations
+     - Enforcement action taken
+     - Latency breakdown
+     - Audit trail metadata (ip, user agent placeholders)
+   - Export button:
+     - “Export CSV” (mock: generates a CSV from the current table and downloads)
+
+6) Nav + UX polish:
+   - Add a left sidebar or top navbar with icons and clear active states.
+   - Add breadcrumbs on inner pages.
+   - Add loading skeletons for charts/tables (even with mock data).
+   - Add empty states only where appropriate (but provide sample content by default).
+   - Add consistent toasts for actions (copied, saved, exported).
+   - Ensure accessibility basics (contrast, focus states).
+
+7) Data Modeling (mock):
+Create /src/mock with:
+- stats.ts (KPIs, time series)
+- auditTrails.ts (requests list)
+- prompts.ts (generated templates + saved library)
+- sdk.ts (versions, changelog)
+- policies.ts (policy list and versions)
+
+Use TypeScript interfaces for each data object.
+
+Output Requirements:
+- Implement all routes and navbar items.
+- Ensure all pages render with mock data and look production-grade.
+- Provide clean, commented code.
+- Add a README.md explaining:
+  - how to run
+  - folder structure
+  - where mock data lives
+  - how to wire to real API later
