@@ -151,7 +151,7 @@ export default function DashboardPage() {
                       ))}
                     </Pie>
                     <Tooltip />
-                    <Legend layout="vertical" align="right" verticalAlign="middle" wrapperStyle={{ fontSize: "0.75rem" }} />
+                    <Legend layout="vertical" align="right" verticalAlign="middle" wrapperStyle={{ fontSize: "0.75rem", paddingLeft: "20px" }} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
