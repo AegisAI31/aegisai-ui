@@ -1,52 +1,58 @@
-import { NextResponse } from "next/server";
-import pool, { initDB } from "@/lib/db";
-import { getSessionUser } from "@/lib/auth";
+import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
+import { AUTH_API_URL, AUTH_COOKIE } from "@/lib/config";
+
+async function getToken() {
+  const jar = await cookies();
+  return jar.get(AUTH_COOKIE)?.value;
+}
 
 function unauthorized() {
   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 }
 
 export async function PATCH(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await getSessionUser();
-  if (!session) return unauthorized();
+  const token = await getToken();
+  if (!token) return unauthorized();
 
   const { id } = await params;
-  await initDB();
-  const { name } = await request.json();
+  const body = await request.json();
 
-  const result = await pool.query(
-    "UPDATE api_keys SET name = $1 WHERE id = $2 AND user_id = $3 RETURNING id, name, is_active, created_at",
-    [name, id, session.sub]
-  );
+  const res = await fetch(`${AUTH_API_URL}/api-keys/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name: body.name }),
+  });
 
-  if (result.rows.length === 0) {
-    return NextResponse.json({ error: "Key not found" }, { status: 404 });
-  }
-
-  return NextResponse.json(result.rows[0]);
+  const payload = await res.json();
+  if (!res.ok) return NextResponse.json({ error: payload.detail }, { status: res.status });
+  return NextResponse.json(payload);
 }
 
 export async function DELETE(
-  _request: Request,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const session = await getSessionUser();
-  if (!session) return unauthorized();
+  const token = await getToken();
+  if (!token) return unauthorized();
 
   const { id } = await params;
-  await initDB();
 
-  const result = await pool.query(
-    "UPDATE api_keys SET is_active = false WHERE id = $1 AND user_id = $2 RETURNING id",
-    [id, session.sub]
-  );
+  const res = await fetch(`${AUTH_API_URL}/api-keys/${id}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  });
 
-  if (result.rows.length === 0) {
-    return NextResponse.json({ error: "Key not found" }, { status: 404 });
+  if (res.status === 204) return NextResponse.json({ ok: true });
+  if (!res.ok) {
+    const payload = await res.json().catch(() => ({}));
+    return NextResponse.json({ error: payload.detail || "Not found" }, { status: res.status });
   }
-
   return NextResponse.json({ ok: true });
 }

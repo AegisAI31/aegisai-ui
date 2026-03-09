@@ -54,6 +54,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const mainNavItems = [
     { href: "/dashboard", label: "Dashboard", icon: "dashboard" },
     { href: "/dashboard/evaluate", label: "Trust Evaluation", icon: "shield" },
+    { href: "/dashboard/reports", label: "Reports", icon: "audit" },
     { href: "/dashboard/api-keys", label: "API Keys", icon: "key" },
     { href: "/dashboard/prompt-generator", label: "Prompt Generator", icon: "prompt" },
     { href: "/dashboard/sdk", label: "SDK", icon: "sdk" },

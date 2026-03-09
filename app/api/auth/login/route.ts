@@ -1,43 +1,28 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
-import pool, { initDB } from "@/lib/db";
-import { createToken } from "@/lib/auth";
-import { AUTH_COOKIE } from "@/lib/config";
+import { AUTH_API_URL, AUTH_COOKIE } from "@/lib/config";
 
 export async function POST(request: NextRequest) {
   try {
-    await initDB();
-    const { email, password } = await request.json();
+    const body = await request.json();
 
-    if (!email || !password) {
-      return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
+    const res = await fetch(`${AUTH_API_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: body.email, password: body.password }),
+    });
+
+    const payload = await res.json();
+
+    if (!res.ok) {
+      return NextResponse.json(
+        { error: payload.detail || "Login failed" },
+        { status: res.status }
+      );
     }
-
-    const result = await pool.query(
-      "SELECT id, email, password_hash, role, is_active FROM users WHERE email = $1",
-      [email]
-    );
-
-    if (result.rows.length === 0) {
-      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
-    }
-
-    const user = result.rows[0];
-    const valid = await bcrypt.compare(password, user.password_hash);
-
-    if (!valid) {
-      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
-    }
-
-    if (!user.is_active) {
-      return NextResponse.json({ error: "Account is deactivated" }, { status: 403 });
-    }
-
-    const token = await createToken(user.id, user.email, user.role);
 
     const jar = await cookies();
-    jar.set(AUTH_COOKIE, token, {
+    jar.set(AUTH_COOKIE, payload.access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -47,10 +32,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ ok: true });
   } catch (error) {
-    console.error("Login error:", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Login failed" },
-      { status: 401 }
+      { status: 500 }
     );
   }
 }

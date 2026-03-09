@@ -2,7 +2,7 @@ import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
 import { Footer } from "@/components/footer";
 import { HeroAnimation } from "@/components/hero-animation";
-import { LogoCarousel } from "@/components/logo-carousel";
+import { ModelCarousel } from "@/components/model-carousel";
 import "./hero-animation.css";
 
 const pillars = [
@@ -147,9 +147,12 @@ export default function LandingPage() {
 
         <section className="trust-bar">
           <div className="shell">
-            <p className="trust-bar-label">Trusted by leading enterprises worldwide</p>
+            <p className="trust-bar-label">Trusted enterprise grade models</p>
+            <p className="trust-bar-sub">
+              Every pillar is powered by best-in-class open-source AI safety models — free tier, production-ready.
+            </p>
           </div>
-          <LogoCarousel />
+          <ModelCarousel />
         </section>
 
         <section className="stats-section">

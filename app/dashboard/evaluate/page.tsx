@@ -45,6 +45,17 @@ export default function EvaluatePage() {
         throw new Error(payload.error || payload.detail || "Evaluation failed");
       }
       setTrustResult(payload.data);
+
+      // Persist report to connectors (fire-and-forget, don't block UI)
+      fetch("/api/reports", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: `${model} — ${new Date().toLocaleString()}`,
+          report_type: "trust_evaluation",
+          input_payload: { prompt, response, model, provider, result: payload.data },
+        }),
+      }).catch(() => {});
     } catch (err) {
       setError(err instanceof Error ? err.message : "Evaluation failed");
     } finally {

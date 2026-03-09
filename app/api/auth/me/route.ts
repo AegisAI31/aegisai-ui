@@ -1,17 +1,23 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { getSessionUser } from "@/lib/auth";
+import { AUTH_API_URL, AUTH_COOKIE } from "@/lib/config";
 
 export async function GET() {
-  const session = await getSessionUser();
+  const jar = await cookies();
+  const token = jar.get(AUTH_COOKIE)?.value;
 
-  if (!session) {
+  if (!token) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  return NextResponse.json({
-    id: session.sub,
-    email: session.email,
-    role: session.role,
-    is_active: true,
+  const res = await fetch(`${AUTH_API_URL}/auth/me`, {
+    headers: { Authorization: `Bearer ${token}` },
   });
+
+  if (!res.ok) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const user = await res.json();
+  return NextResponse.json(user);
 }

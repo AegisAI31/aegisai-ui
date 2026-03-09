@@ -1,126 +1,74 @@
 "use client";
 
-import { useState } from "react";
-import { settingsAccount, settingsPreferences } from "../../mock/settings";
+import { useEffect, useState } from "react";
 
 interface AccountTabProps {
   searchQuery: string;
   showToast: (msg: string) => void;
 }
 
+type User = { id: string; email: string; role: string; is_active: boolean };
+
 export default function AccountTab({ searchQuery, showToast }: AccountTabProps) {
-  const [name, setName] = useState(settingsAccount.name);
-  const [workspace, setWorkspace] = useState(settingsAccount.workspace);
-  const [timezone, setTimezone] = useState(settingsPreferences.timezone);
-  const [theme, setTheme] = useState<"Dark" | "Auto">(settingsPreferences.theme);
-  const [dashboardRange, setDashboardRange] = useState<"7d" | "14d" | "30d">(settingsPreferences.dashboardRange);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((r) => r.json())
+      .then((u) => setUser(u))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   const hidden = (terms: string) =>
     searchQuery && !terms.toLowerCase().includes(searchQuery.toLowerCase()) ? " dash-hidden" : "";
 
+  if (loading) return <div className="dash-empty"><p>Loading profile...</p></div>;
+  if (!user) return <div className="dash-error">Failed to load profile.</div>;
+
   return (
     <div>
-      <div className={"dash-card" + hidden("profile name email role workspace")} data-search-terms="profile name email role workspace">
+      <div className={"dash-card" + hidden("profile email role account")} data-search-terms="profile email role account">
         <div className="dash-card-header">
           <div>
             <div className="dash-card-title">Profile</div>
-            <div className="dash-card-subtitle">Manage your account details</div>
+            <div className="dash-card-subtitle">Your account details from AegisAI Auth</div>
           </div>
         </div>
-        <div className="dash-form-group">
-          <label className="dash-label">Name</label>
-          <input
-            className="dash-input"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+        <div className="dash-detail-row">
+          <span className="dash-detail-key">Email</span>
+          <span className="dash-detail-value">{user.email}</span>
         </div>
-        <div className="dash-form-group">
-          <label className="dash-label">Email</label>
-          <input
-            className="dash-input"
-            type="email"
-            value={settingsAccount.email}
-            disabled
-          />
+        <div className="dash-detail-row">
+          <span className="dash-detail-key">Role</span>
+          <span className="dash-badge dash-badge-accent">{user.role}</span>
         </div>
-        <div className="dash-form-group">
-          <label className="dash-label">Role</label>
-          <div>
-            <span className="dash-badge dash-badge-accent">{settingsAccount.role}</span>
-          </div>
+        <div className="dash-detail-row">
+          <span className="dash-detail-key">Status</span>
+          <span className={`dash-badge ${user.is_active ? "dash-badge-success" : "dash-badge-error"}`}>
+            {user.is_active ? "Active" : "Inactive"}
+          </span>
         </div>
-        <div className="dash-form-group">
-          <label className="dash-label">Workspace</label>
-          <select
-            className="dash-input"
-            value={workspace}
-            onChange={(e) => setWorkspace(e.target.value)}
-          >
-            {settingsAccount.workspaces.map((ws) => (
-              <option key={ws} value={ws}>{ws}</option>
-            ))}
-          </select>
+        <div className="dash-detail-row">
+          <span className="dash-detail-key">User ID</span>
+          <span className="dash-detail-value" style={{ fontFamily: "monospace", fontSize: "0.8rem" }}>{user.id}</span>
         </div>
-        <button
-          className="dash-btn dash-btn-primary"
-          onClick={() => showToast("Profile updated")}
-        >
-          Update profile
-        </button>
+        <p style={{ fontSize: "0.82rem", color: "var(--d-text-muted)", marginTop: "1rem" }}>
+          Profile editing is managed through your organisation administrator.
+        </p>
       </div>
 
-      <div className={"dash-card" + hidden("preferences timezone theme dashboard range")} data-search-terms="preferences timezone theme dashboard range">
+      <div className={"dash-card" + hidden("preferences coming soon")} data-search-terms="preferences coming soon">
         <div className="dash-card-header">
           <div>
             <div className="dash-card-title">Preferences</div>
-            <div className="dash-card-subtitle">Customize your dashboard experience</div>
           </div>
+          <span className="dash-badge dash-badge-warning">Coming Soon</span>
         </div>
-        <div className="dash-form-group">
-          <label className="dash-label">Timezone</label>
-          <select
-            className="dash-input"
-            value={timezone}
-            onChange={(e) => setTimezone(e.target.value)}
-          >
-            <option value="America/New_York">America/New_York</option>
-            <option value="America/Chicago">America/Chicago</option>
-            <option value="America/Los_Angeles">America/Los_Angeles</option>
-            <option value="Europe/London">Europe/London</option>
-            <option value="Asia/Tokyo">Asia/Tokyo</option>
-          </select>
-        </div>
-        <div className="dash-form-group">
-          <label className="dash-label">Theme</label>
-          <select
-            className="dash-input"
-            value={theme}
-            onChange={(e) => setTheme(e.target.value as "Dark" | "Auto")}
-          >
-            <option value="Dark">Dark</option>
-            <option value="Auto">Auto</option>
-          </select>
-        </div>
-        <div className="dash-form-group">
-          <label className="dash-label">Dashboard range</label>
-          <select
-            className="dash-input"
-            value={dashboardRange}
-            onChange={(e) => setDashboardRange(e.target.value as "7d" | "14d" | "30d")}
-          >
-            <option value="7d">7 days</option>
-            <option value="14d">14 days</option>
-            <option value="30d">30 days</option>
-          </select>
-        </div>
-        <button
-          className="dash-btn dash-btn-primary"
-          onClick={() => showToast("Preferences saved")}
-        >
-          Save preferences
-        </button>
+        <p style={{ fontSize: "0.85rem", color: "var(--d-text-secondary)", lineHeight: 1.6 }}>
+          Timezone, theme, and dashboard range preferences will be configurable in a future release.
+        </p>
       </div>
     </div>
   );
